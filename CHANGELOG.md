@@ -1,6 +1,63 @@
 # Changelog
 Alle nennenswerten Änderungen an diesem Projekt werden in dieser Datei dokumentiert.
 
+## [0.2.0] - 08.04.2024
+
+### Added
++ [create.py](https://github.com/PixelPilot24/Preiskontrolle/blob/0.2.0/src/create.py) neues Produkt erstellen
+  + [create_widgets()](https://github.com/PixelPilot24/Preiskontrolle/blob/0.2.0/src/create.py#L23) erstellt
+  die benötigten Widgets
+  + [check_url()](https://github.com/PixelPilot24/Preiskontrolle/blob/0.2.0/src/create.py#L41) überprüft, ob
+  die URL zu alternate oder galaxus gehört. Falls nicht, dann ist die Ausgabe "error"
+  + [check_and_save_data()](https://github.com/PixelPilot24/Preiskontrolle/blob/0.2.0/src/create.py#L49),
+  speichert den neuen Preis ab
+  + [save_data()](https://github.com/PixelPilot24/Preiskontrolle/blob/0.2.0/src/create.py#L61) führt die
+  Speicherung der Datei im Hintergrund aus
++ [delete.py](https://github.com/PixelPilot24/Preiskontrolle/blob/0.2.0/src/delete.py)
+  + [create_data_list()](https://github.com/PixelPilot24/Preiskontrolle/blob/0.2.0/src/delete.py#L68) erstellt
+  eine Liste mit den Namen und dem aktuellen Preis
+  + [on_mouse_wheel](https://github.com/PixelPilot24/Preiskontrolle/blob/0.2.0/src/delete.py#L65) Methode für
+  das scrollen der Liste
+  + [create_scrollbar()](https://github.com/PixelPilot24/Preiskontrolle/blob/0.2.0/src/delete.py#L56) erstellt
+  eine horizontale und vertikale Scrollbar
+  + [create_label_and_button()](https://github.com/PixelPilot24/Preiskontrolle/blob/0.2.0/src/delete.py#L23)
+  erstellt zwei Buttons für das Löschen und die Seite besuchen. Außerdem noch die Labels für den Namen und den
+  Preis
++ [autostart.py](https://github.com/PixelPilot24/Preiskontrolle/blob/0.2.0/src/autostart.py) Datei für das
+automatische Starten des Programms beim Hochfahren des Computers
++ [notification.py](https://github.com/PixelPilot24/Preiskontrolle/blob/0.2.0/src/notification.py)
+  + [loading_progress()](https://github.com/PixelPilot24/Preiskontrolle/blob/0.2.0/src/notification.py#L86)
+  das ausgelagerte überprüfen und hinzufügen von [main.py](https://github.com/PixelPilot24/Preiskontrolle/blob/0.2.0/src/main.py).
+  Ein Ladebalken der anzeigt wie weit die Daten überprüft wurden
+
+### Changed
++ [main.py](https://github.com/PixelPilot24/Preiskontrolle/blob/0.2.0/src/main.py)
+  + [load_json()](https://github.com/PixelPilot24/Preiskontrolle/blob/0.2.0/src/main.py#L30) autostart bool
+  hinzugefügt und das Überprüfen und hinzufügen der Preise nach 
+  [notification.py](https://github.com/PixelPilot24/Preiskontrolle/blob/0.2.0/src/notification.py#L99) ausgelagert
++ [checkData.py](https://github.com/PixelPilot24/Preiskontrolle/blob/0.2.0/src/checkData.py)
+  + [check_data_alternate()](https://github.com/PixelPilot24/Preiskontrolle/blob/0.2.0/src/checkData.py#L9)
+  try except hinzugefügt, die Preissuche überarbeitet und bei Fehlern gibt der return -1 wieder
+  + [check_data_galaxus()](https://github.com/PixelPilot24/Preiskontrolle/blob/0.2.0/src/checkData.py#L26)
+  try except hinzugefügt, die Preissuche überarbeitet und bei Fehlern gibt der return -1 wieder
++ [notification.py](https://github.com/PixelPilot24/Preiskontrolle/blob/0.2.0/src/notification.py)
+  + root = Tk() -> [self.root = Tk()](https://github.com/PixelPilot24/Preiskontrolle/blob/0.2.0/src/notification.py#L15)
+  + die Fenstererstellung von init auf die [create_window()](https://github.com/PixelPilot24/Preiskontrolle/blob/0.2.0/src/notification.py#L17)
+  Methode umgestellt
+
+### Removed
++ [notification.py](https://github.com/PixelPilot24/Preiskontrolle/blob/0.1.0/src/notification.py)
+  + [new_data()](https://github.com/PixelPilot24/Preiskontrolle/blob/0.1.0/src/notification.py#L77) leere Methode
+  (Platzhalter)
+  + [created_data()](https://github.com/PixelPilot24/Preiskontrolle/blob/0.1.0/src/notification.py#L80) leere Methode
+  (Platzhalter)
+  + [check_new_price()](https://github.com/PixelPilot24/Preiskontrolle/blob/0.1.0/src/notification.py#L83) leere Methode
+  (Platzhalter)
++ [main.py](https://github.com/PixelPilot24/Preiskontrolle/blob/0.1.0/src/main.py)
+  + [init()](https://github.com/PixelPilot24/Preiskontrolle/blob/0.1.0/src/main.py#L11) gelöscht, weil die Funktion
+  load_json() jetzt direkt von der main() ausgeführt wird
+
+
 ## [0.1.0] - 04.04.2024
 
 ### Added

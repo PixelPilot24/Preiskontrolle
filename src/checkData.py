@@ -12,22 +12,15 @@ class CheckData:
         if response.status_code == 200:
             soup = BeautifulSoup(response.text, "html.parser")
 
-            results = soup.find_all("div", class_="col-12 col-md-auto")
+            try:
+                result = soup.find("div", class_="col-12 col-md-auto")
+                price = result.text[2:].replace(",", ".")
 
-            for elem in results:
-                price = elem.text
-                splice = price.split(" ")
-
-                if len(splice) == 2:
-                    price_list = price[2:].split(",")
-                    new_price = price
-
-                    if len(price_list) > 1:
-                        new_price = price_list[0] + "." + price_list[1]
-
-                    return float(new_price)
+                return float(price)
+            except AttributeError:
+                return -1
         else:
-            print("Fehler: ", response.status_code)
+            return -1
 
     @staticmethod
     def check_data_galaxus(url: str) -> float:
@@ -36,19 +29,15 @@ class CheckData:
         if response.status_code == 200:
             soup = BeautifulSoup(response.text, "html.parser")
 
-            results = soup.find_all("button", class_="sc-125c42c7-5 hMyxKO")
+            try:
+                result = soup.find("button", class_="sc-125c42c7-5 hMyxKO")
 
-            for elem in results:
-                price = elem.text
-                price_list = price.split(",")
-                new_price = price
-
-                if len(price_list) > 1:
-                    new_price = price_list[0] + "." + price_list[1]
-
+                new_price = result.text.replace(",", ".")
                 return float(new_price)
+            except AttributeError:
+                return -1
         else:
-            print("Fehler: ", response.status_code)
+            return -1
 
     @staticmethod
     def amount_in_euro(amount: float) -> str:
