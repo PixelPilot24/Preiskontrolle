@@ -1,6 +1,28 @@
 # Changelog
 Alle nennenswerten Änderungen an diesem Projekt werden in dieser Datei dokumentiert.
 
+## [0.3.0] - 09.04.2024
+
+### Added
++ [edit.py](https://github.com/PixelPilot24/Preiskontrolle/blob/0.3.0/src/edit.py) Bearbeitung
+  + [rename()](https://github.com/PixelPilot24/Preiskontrolle/blob/0.3.0/src/edit.py#L51) tauscht den Text gegen
+  ein Eingabefeld und zwei Buttons für speichern und abbrechen
+  + [cancel_method()](https://github.com/PixelPilot24/Preiskontrolle/blob/0.3.0/src/edit.py#L39): das Eingabefeld
+  wird wieder zurück in den Text umgewandelt
+  + [save_method()](https://github.com/PixelPilot24/Preiskontrolle/blob/0.3.0/src/edit.py#L7) speichert die
+  Datei mit dem neuen Namen ab
+
+### Changed
++ [delete.py](https://github.com/PixelPilot24/Preiskontrolle/blob/0.3.0/src/delete.py)
+  + in der [delete_data()](https://github.com/PixelPilot24/Preiskontrolle/blob/0.3.0/src/delete.py#L28) wurde
+  die Farbe des Textes des Namens geändert und eine Methode hinzugefügt zum Ändern des Namens 
+  [name_clicked()](https://github.com/PixelPilot24/Preiskontrolle/blob/0.3.0/src/delete.py#L49)
++ [create.py](https://github.com/PixelPilot24/Preiskontrolle/blob/0.3.0/src/create.py)
+  + in der [save_data()](https://github.com/PixelPilot24/Preiskontrolle/blob/0.3.0/src/create.py#L61) wurde
+  hinzugefügt das, nachdem der speichern Knopf betätigt wurde, das Feld für den Namen und die URL wieder 
+  leer werden
+
+
 ## [0.2.0] - 08.04.2024
 
 ### Added

@@ -68,3 +68,5 @@ class CreateNewPriceControl:
         else:
             thread = threading.Thread(target=self.check_and_save_data, args=(name, url, site))
             thread.start()
+            self.name_entry.delete(0, "end")
+            self.url_entry.delete(0, "end")

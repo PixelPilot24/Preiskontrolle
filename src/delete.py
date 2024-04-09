@@ -5,6 +5,7 @@ import main
 from tkinter import messagebox
 from tkinter import *
 from data import Data
+from edit import EditName
 
 
 class DeleteData:
@@ -42,7 +43,14 @@ class DeleteData:
         price = checkData.CheckData.amount_in_euro(point_price)
         url = data_name["url"]
 
-        Label(master=frame_item, text=name, padx=pad, pady=pad, bg=color).grid(row=index, column=0)
+        name_label = Label(master=frame_item, text=name, padx=pad, pady=pad, bg=color, fg="blue")
+        name_label.grid(row=index, column=0)
+
+        def name_clicked(event):
+            width = name_label.winfo_width() // 6
+            EditName.rename(name_label, frame_item, index, name, width, color, site)
+
+        name_label.bind("<Button-1>", name_clicked)
         Label(master=frame_item, text=price, padx=pad, pady=pad, bg=color).grid(row=index, column=1)
         Button(master=frame_item, text="Seite besuchen", padx=pad, pady=pad,
                command=lambda u=url: notification.Notification.open_webpage(u)).grid(row=index, column=2)
