@@ -8,8 +8,8 @@ from data import Data
 class Autostart:
     @staticmethod
     def load_and_check_data():
-        _main = main.DataHandler
-        _main.load_json(_main(), True)
+        _main = main.DataHandler()
+        _main.load_json(True)
         notification_data = []
 
         for site in Data.data:
@@ -33,8 +33,8 @@ class Autostart:
                             notification_data.append(data_list)
 
         if len(notification_data) != 0:
-            noti = notification.Notification
-            noti.create_window(noti(), True, notification_data)
+            noti = notification.Notification()
+            noti.run(True, notification_data)
 
 
 if __name__ == '__main__':

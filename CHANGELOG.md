@@ -1,6 +1,17 @@
 # Changelog
 Alle nennenswerten Änderungen an diesem Projekt werden in dieser Datei dokumentiert.
 
+## [0.4.0] - 29.04.2024
+### Added
++ README.md
++ Dokumentationen
+
+### Changed
++ [delete.py](https://github.com/PixelPilot24/Preiskontrolle/blob/0.3.0/src/delete.py) umbenannt zu 
+[dataGUI.py](https://github.com/PixelPilot24/Preiskontrolle/blob/0.4.0/src/dataGUI.py)
+  + [DeleteData](https://github.com/PixelPilot24/Preiskontrolle/blob/0.3.0/src/delete.py#L11) Klasse umbenannt in
+  [DataGUI](https://github.com/PixelPilot24/Preiskontrolle/blob/0.4.0/src/dataGUI.py#L11)
+
 ## [0.3.0] - 09.04.2024
 
 ### Added

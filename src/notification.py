@@ -1,5 +1,5 @@
 import webbrowser
-import delete
+import dataGUI
 import threading
 import main
 import checkData
@@ -11,24 +11,36 @@ from data import Data
 
 
 class Notification:
+    """
+    Eine Klasse zur Anzeige von Benachrichtigungen und Daten in einem Fenster.
+    """
     def __init__(self):
-        self.root = Tk()
+        self.__root = Tk()
 
-    def create_window(self, autostart: bool, item_data: list):
-        self.root.title("Preiskontrolle")
-        self.root.geometry("600x300")
+    def __create_window(self, autostart: bool, item_data: list):
+        """
+        Erstellt das Hauptfenster mit Menüleiste und Anzeige der Daten in einem Treeview.
 
-        self.create_menubar(self.root)
+        :param autostart: Ein Boolean, der angibt, ob der Autostart aktiviert ist.
+        :param item_data: Eine Liste von Daten für die Anzeige im Treeview.
+        """
+        self.__root.title("Preiskontrolle")
+        self.__root.geometry("600x300")
+
+        self.__create_menubar()
 
         if not autostart:
-            self.loading_progress()
+            self.__loading_progress()
         else:
-            self.create_treeview(item_data)
+            self.__create_treeview(item_data)
 
-        self.root.mainloop()
+    def __create_treeview(self, item_data: list):
+        """
+        Erstellt einen Treeview zur Anzeige von Daten in tabellarischer Form.
 
-    def create_treeview(self, item_data: list):
-        tree = ttk.Treeview(master=self.root)
+        :param item_data: Eine Liste von Daten für die Anzeige im Treeview.
+        """
+        tree = ttk.Treeview(master=self.__root)
 
         tree.config(columns=("name", "last_day", "today", "percent", "site"))
 
@@ -47,6 +59,9 @@ class Notification:
         tree.heading("site", text="Seite")
 
         def handle_link(event):
+            """
+            Ermöglicht das beim Anklicken des Textes die Webseite geöffnet wird.
+            """
             selected_item = tree.identify_row(event.y)
 
             if selected_item:
@@ -57,79 +72,112 @@ class Notification:
         for item in item_data:
             tree.insert("", "end", text="",
                         values=(
-                            item["name"], item["last_day"], item["today"], item["percent"], item["site"], item["url"]))
+                            item["name"], item["last_day"], item["today"],
+                            item["percent"], item["site"], item["url"])
+                        )
 
         tree.bind("<Button-1>", handle_link)
 
-        scrollbar = Scrollbar(master=self.root, orient="vertical", command=tree.yview)
+        scrollbar = Scrollbar(master=self.__root, orient="vertical", command=tree.yview)
         tree.configure(yscrollcommand=scrollbar.set)
         scrollbar.pack(side="right", fill="y")
 
         tree.pack(expand=True, fill="both")
 
-    @staticmethod
-    def create_menubar(root: Tk):
-        menubar = Menu(master=root)
+    def __create_menubar(self):
+        """
+        Erstellt die Menüleiste mit verschiedenen Optionen wie "Neue Datei", "Erstellte Dateien" und "Schließen".
+        """
+        menubar = Menu(master=self.__root)
         option_menu = Menu(menubar, tearoff=0)
-        option_menu.add_command(label="Neue Datei", command=Create)
-        option_menu.add_command(label="Erstellte Dateien", command=delete.DeleteData)
+        option_menu.add_command(label="Neue Datei", command=lambda: Create().run())
+        option_menu.add_command(label="Erstellte Dateien", command=dataGUI.DataGUI)
         option_menu.add_separator()
         option_menu.add_command(label="Schließen", command=lambda: exit())
         menubar.add_cascade(label="Datei", menu=option_menu)
 
-        root.config(menu=menubar)
+        self.__root.config(menu=menubar)
 
     @staticmethod
     def open_webpage(url: str):
+        """
+        Öffnet die angegebene URL in einem Webbrowser.
+
+        :param url: Die URL, die geöffnet werden soll.
+        """
         webbrowser.open(url)
 
-    def loading_progress(self):
-        def load_data(progress_bar: ttk.Progressbar):
-            total_steps = len(Data.data["alternate"]) + len(Data.data["galaxus"])
-            step = 0
-            message = ""
-            notification_data = []
-
-            for site in Data.data:
-                if len(Data.data[site]) != 0:
-                    for name in Data.data[site].keys():
-                        check = checkData.CheckData
-                        url = Data.data[site][name]["url"]
-
-                        if site == "alternate":
-                            price = check.check_data_alternate(url)
-                        else:
-                            price = check.check_data_galaxus(url)
-
-                        if price > 0:
-                            main.DataHandler.insert_data(site, name, price)
-                            data_list = check.check_new_price(site, name)
-
-                            if data_list is not None and len(data_list) != 0:
-                                notification_data.append(data_list)
-                        else:
-                            message += "Für " + name + "(" + site + ")" + " konnte kein Preis gefunden werden\n"
-
-                        step += 1
-                        progress_value = int(step / total_steps * 100)
-                        progress_bar.config(value=progress_value)
-                        progress_bar.update()
-                else:
-                    message += "Keine URL für " + site + " gefunden\n"
-            if message != "":
-                self.message_label(message)
-            elif len(notification_data) != 0:
-                self.create_treeview(notification_data)
-            else:
-                self.message_label("Keine Preisveränderungen")
-
-            progress_bar.pack_forget()
-
-        progressbar = ttk.Progressbar(master=self.root, orient="horizontal", length=200, mode="determinate")
+    def __loading_progress(self):
+        """
+        Zeigt einen Ladebalken während des Datenladeprozesses an.
+        """
+        progressbar = ttk.Progressbar(master=self.__root, orient="horizontal", length=200, mode="determinate")
         progressbar.pack(pady=10)
 
-        thread = threading.Thread(target=load_data, args=(progressbar,))
+        thread = threading.Thread(target=self.__load_data, args=(progressbar,))
         thread.start()
 
-    def message_label(self, message: str):
-        Label(master=self.root, text=message, font=("Arial", 12)).pack()
+    def __load_data(self, progress_bar: ttk.Progressbar):
+        """
+        Lädt Daten von verschiedenen Webseiten, überprüft Preise und aktualisiert die Anzeige.
+
+        :param progress_bar: Der Fortschrittsbalken zur Anzeige des Ladefortschritts.
+        """
+        total_steps = len(Data.data["alternate"]) + len(Data.data["galaxus"])
+        step = 0
+        message = ""
+        notification_data = []
+
+        for site in Data.data:
+            if len(Data.data[site]) != 0:
+                for name in Data.data[site].keys():
+                    check = checkData.CheckData
+                    url = Data.data[site][name]["url"]
+
+                    if site == "alternate":
+                        price = check.check_data_alternate(url)
+                    else:
+                        price = check.check_data_galaxus(url)
+
+                    if price > 0:
+                        main.DataHandler.insert_data(site, name, price)
+                        data_list = check.check_new_price(site, name)
+
+                        if data_list is not None and len(data_list) != 0:
+                            notification_data.append(data_list)
+                    else:
+                        message += f"Für {name} ({site}) konnte kein Preis gefunden werden\n"
+
+                    step += 1
+                    progress_value = int(step / total_steps * 100)
+                    progress_bar.config(value=progress_value)
+                    progress_bar.update()
+            else:
+                message += f"Keine URL für {site} gefunden\n"
+        if message != "":
+            self.__message_label(message)
+        elif len(notification_data) != 0:
+            self.__create_treeview(notification_data)
+        else:
+            self.__message_label("Keine Preisveränderungen")
+
+        progress_bar.pack_forget()
+
+    def __message_label(self, message: str):
+        """
+        Zeigt eine Nachricht im Fenster an.
+
+        :param message: Die Nachricht, die angezeigt werden soll.
+        """
+        Label(master=self.__root, text=message, font=("Arial", 12)).pack()
+
+    def run(self, autostart: bool, item_data: list):
+        """
+        Startet die Benachrichtigungsanwendung mit den übergebenen Daten.
+
+        :param autostart: Ein Boolean, der angibt, ob der Autostart aktiviert ist.
+        :param item_data: Eine Liste von Daten für die Anzeige im Treeview.
+        """
+        self.__create_window(autostart, item_data)
+        
+        self.__root.mainloop()
