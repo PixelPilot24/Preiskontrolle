@@ -91,7 +91,7 @@ class CheckData:
         Wenn mindestens zwei Datenpunkte vorhanden sind, wird der Preisunterschied zwischen dem letzten
         und vorletzten Datenpunkt berechnet.
 
-        Wenn der Preisunterschied mindestens 1 % beträgt, dann wird eine Dictionary mit den folgenden Informationen ausgegeben:
+        Wenn der Preisunterschied mindestens 1 % oder weniger als -1 %beträgt, dann wird eine Dictionary mit den folgenden Informationen ausgegeben:
 
         - name: der Name des Produkts
         - last_day: der Preis am vorletzten Tag
@@ -114,7 +114,7 @@ class CheckData:
         if data_length >= 2:
             percent = ((data_values[second_last] / data_values[last]) - 1) * 100
 
-            if percent >= 1:
+            if percent >= 1 or percent <= -1:
                 if data_values[last] < data_values[second_last]:
                     result_data["name"] = name
                     result_data["last_day"] = (str(data_keys[second_last]) + ": "

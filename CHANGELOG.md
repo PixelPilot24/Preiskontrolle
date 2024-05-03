@@ -1,6 +1,13 @@
 # Changelog
 Alle nennenswerten Änderungen an diesem Projekt werden in dieser Datei dokumentiert.
 
+
+## [0.5.0] - 03.05.2024
+### Changed
++ [checkData.py](https://github.com/PixelPilot24/Preiskontrolle/blob/0.5.0/src/checkData.py)
+  + in [check_new_price()](https://github.com/PixelPilot24/Preiskontrolle/blob/0.5.0/src/checkData.py#117) neue Kondition
+  hinzugefügt da der neue Preis erst dann angezeigt wurde, wenn es mehr als 1 % ist aber nicht weniger
+
 ## [0.4.0] - 29.04.2024
 ### Added
 + README.md
